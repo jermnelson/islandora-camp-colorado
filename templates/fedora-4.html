@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block main %}
+ {% include 'snippets/top-bar.html' %}
+
+ {# START first row #}
+ <div class="row">
+ 
+    {# START large-6 columns #} 
+    <div class="large-6 columns">
+ 
+      <h2>Fedora 4</h2>
+      <p>
+       The current development focus of the Fedora Commons digital repository software is 
+       a new version with new re-engineered internals.
+      </p>
+      <div class="panel">
+        <h3>REST &amp; RDF Triples</h3>
+        <p>
+         A big change between Fedora 2.7.x and Fedora 4.0 is the introduction of a more stable
+         and complete REST web services for <strong>C</strong>reate <strong>R</strong>ead <strong>U</strong>pdate 
+         <strong>D</strong>elete operations on Fedora Objects. 
+        </p>
+      </div>
+
+   {# END large-6 columns #}
+   </div>
+
+   <div class="large-6 columns">
+    <img src="{{ url_for('static', filename='img/f4-architecture-components.jpg') }}">
+    <p>Source: 
+     <a href="https://wiki.duraspace.org/display/FF/Documentation">
+      <em>https://wiki.duraspace.org/display/FF/Documentation</em>
+     </a>
+   </div>
+   
+ {# END first row #}
+ </div>   
+    
+{# START second row #}
+<div class="row">
+
+  {# START #}
+  <div class="large-4 columns">
+   <h4>Example REST Calls</h4>
+  {# END #}
+  </div>
+
+  {# START #}
+  <div class="large-4 columns">
+   <h4>SPARQL Endpoint</h4>
+  {# END #}
+  </div>
+
+
+{# END second row #}
+</div>
+
+{% endblock %}

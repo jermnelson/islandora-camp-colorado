@@ -1,1 +1,43 @@
 {% extends 'base.html' %}
+
+{% block main %}
+{% include 'snippets/top-bar.html' %}
+
+  <div class="row">
+     
+    <div class="large-9 columns">
+ 
+      <h1>BIBFRAME Editor</h1>
+      <p>
+        The BIBFRAME Editor is a web-based standalone editor, developed by the 
+        Library of Congress Bibliographic Framework (BIBFRAME) Initiative with 
+        with a code repository at 
+        <a href="https://github.com/lcnetdev/bfe">https://github.com/lcnetdev/bfe</a>. 
+      </p>
+     
+    </div> 
+
+   <div class="large-3 columns">
+    <p style="background-color: #303030" class="panel">
+     <img src="{{ url_for('static', filename='img/node-js.svg') }}">
+    </p>
+    <p>
+     The <a href="">fork</a> of the BIBFRAME Editor allows JSON-LD created in the editor to be 
+     ingested as a Fedora Object.
+    </p>
+   </div>
+
+ </div>
+ <div class="row">
+
+    <div class="large-5 columns">
+      <h5>BIBFRAME Model</h5>
+       
+      <p>
+        <img src="{{ url_for('static', filename='img/bibframe.png') }}"><br/>
+        Source: <a href="http://bibframe.org/vocab-model/"><em>http://bibframe.org/vocab-model/</em></a>
+      </p>
+    </div>
+     
+  </div>
+{% endblock %}

@@ -66,12 +66,21 @@
  
         <div class="large-3 small-6 columns">
           <img src="{{ url_for('static', filename='img/bibframe-newlogo.png') }}" />
-          <h6 class="panel">BIBFRAME Editor</h6>
+          <div class="panel"><a href="/bibframe">BIBFRAME Editor and Conversions</a>
+          is a web-based standalone editor, developed by the Library of 
+          Congress Bibliographic Framework (BIBFRAME) Initiative, that has been forked
+          to include a node.js Fedora 4 backend for saving 
+
+          </div>
         </div>
  
         <div class="large-3 small-6 columns">
           <img src="{{ url_for('static', filename='img/schema-org.png') }}"/>
-          <h6 class="panel">Schema.org Editor</h6>
+          <div class="panel"><a href="/schema-org-editor">Schema.org Editor</a> 
+           is a Flask-HTML5 application that allows users to add and edit 
+           <a href="/references#schema-org">schema.org</a> metadata for
+           Fedora Objects.
+          </div>
         </div>
  
         <div class="large-3 small-6 columns">

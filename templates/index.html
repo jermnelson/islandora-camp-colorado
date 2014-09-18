@@ -46,7 +46,7 @@
       <div>
         <div id="featured" class="main-feature">
          <h2>Islandora Camp CO 14 October 2014</h2>
-         <h1>Using BIBFRAME and Schema.org Linked Data with Fedora 4</h1>
+         <h1>Using Fedora 4 as a Bibliographic Linked Data Store</h1>
          <p>Jeremy Nelson<br>Metadata &amp; Systems Librarian<br>Colorado College</p>
         </div>
       </div>
@@ -61,15 +61,18 @@
  
         <div class="large-3 small-6 columns">
           <img src="{{ url_for('static', filename='img/fedora-commons-4-beta.png') }}" />
-          <h6 class="panel"><a href="/fedora-4">Fedora 4</a></h6>
+          <div class="panel"><a href="/fedora-4">Fedora 4</a> is a latest version of 
+          the popular Fedora Commons Digital Repository software, the backend for 
+          Islandora.
+          </div>
         </div>
  
         <div class="large-3 small-6 columns">
           <img src="{{ url_for('static', filename='img/bibframe-newlogo.png') }}" />
-          <div class="panel"><a href="/bibframe">BIBFRAME Editor and Conversions</a>
+          <div class="panel"><a href="/bibframe">BIBFRAME Linked Data</a>
           is a web-based standalone editor, developed by the Library of 
           Congress Bibliographic Framework (BIBFRAME) Initiative, that has been forked
-          to include a node.js Fedora 4 backend for saving 
+          to include a node.js Fedora 4 backend. 
 
           </div>
         </div>
@@ -85,7 +88,11 @@
  
         <div class="large-3 small-6 columns">
           <img src="http://placehold.it/250x250&text=References"/>
-          <h6 class="panel">References</h6>
+          <div class="panel"><a href="/references">References</a>
+           List of articles, websites, and books cited in this presentation.
+
+          </div>
+          
         </div>
  
      
@@ -114,7 +121,7 @@
             <a href="/references#linked-data">linked data</a></h5>
  
           <div class="show-for-small" align="center">
-            <a href="#" class="small radius button">Call To Action!</a><br>
+            <a href="#" class="small radius button" >Launch Fedora 4</a><br>
  
             <a href="#" class="small radius button">Call To Action!</a>
           </div>
@@ -134,17 +141,20 @@
  
           <div class="large-4 columns hide-for-small">
  
-          <h4>Get In Touch!</h4><hr/>
+          <h4>Local Demonstration</h4><hr/>
  
-          <a class="large button expand" href="#">
-            Call To Action!
+          <a class="large button expand" data-reveal-id="fedora4-demo" href="#">
+            Launch Fedora 4
           </a>
  
-          <a class="large button expand" href="#">
-            Call To Action!
+          <a class="large button expand" data-reveal-id="bfe-demo" href="#">
+            Launch BIBFRAME Editor
           </a>
  
- 
+           <a class="large button expand" data-reveal-id="schema-org-demo" href="#">
+            Launch Schema.org Editor
+          </a>
+
         </div>
  
      
@@ -153,6 +163,4 @@
     </div>
   </div>
  
-     
-
 {% endblock %}

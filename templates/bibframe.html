@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block main %}
+{% include 'snippets/top-bar.html' %}
+  <div class="row">
+    <div class="large-11 columns">
+     <h1>BIBFRAME Sources</h1>
+    </div>
+  </div>
+  <div class="row">
+     
+    <div class="large-9 columns">
+ 
+      <h2>BIBFRAME Editor</h2>
+      <p>
+        The BIBFRAME Editor is a web-based standalone editor, developed by the 
+        Library of Congress Bibliographic Framework (BIBFRAME) Initiative with 
+        with a code repository at 
+        <a href="https://github.com/lcnetdev/bfe">https://github.com/lcnetdev/bfe</a>. 
+      </p>
+    </div> 
+
+   <div class="large-3 columns">
+    <p style="background-color: #303030" class="panel">
+     <img src="{{ url_for('static', filename='img/node-js.svg') }}">
+    </p>
+    <p>
+     The <a href="">fork</a> of the BIBFRAME Editor allows JSON-LD created in the editor to be 
+     ingested as a Fedora Object.
+    </p>
+   </div>
+
+ </div>
+ <div class="row">
+  
+   <div class="large-5 columns">  
+    <p class="panel">
+     To support converting MARC21 records to BIBFRAME, the Library of Congress 
+     has a jQuery-based conversion program that takes MARCXML and returns BIBFRAME 
+     RDF graphs serialized as RDF/XML. 
+    </p>
+   </div>
+
+   <div class="large-7 columns">
+    <h2>MARC-to-BIBFRAME Conversion</h2>
+     
+   </div>
+ </div>
+ <div class="row">
+
+    <div class="large-5 columns">
+      <h5>BIBFRAME Model</h5>
+       
+      <p>
+        <img src="{{ url_for('static', filename='img/bibframe.png') }}"><br/>
+        Source: <a href="http://bibframe.org/vocab-model/"><em>http://bibframe.org/vocab-model/</em></a>
+      </p>
+    </div>
+     
+  <div class="large-7 columns">
+    {# Comes from record 9568 of Most Popular record load #}
+    <h4>MARC21 Record</h4>
+    <pre>
+=LDR  01095nam  2200349Ia 4500
+=001  13920098
+=003  OCoLC
+=005  19960802131248.0
+=008  860723t19851984ilu\\\\\\b\\\\001\0\eng\d
+=010  \\$a84000215
+=020  \\$a0226026698 (pbk.)
+=035  \\$a.b12705007$btb$cc
+=035  \\$a.b12705007$btb$cc
+=040  \\$aKWW$cKWW
+=049  \\$aCOCA
+=090  \\$aJC71.A41 L67 1985
+=100  0\$aAristotle.
+=240  10$aPolitics.$lEnglish.
+=245  14$aThe politics /$cAristotle ; translated, and with an introduction, notes, and glossary by Carnes Lord.
+=250  \\$aPaperback ed.
+=260  \\$aChicago :$bUniversity of Chicago Press,$c1985, c1984.
+=300  \\$a284 p. ;$c24 cm.
+=500  \\$aTranslation of: Politica.
+=504  \\$aBibliography: p. 243-271.
+=500  \\$aIncludes index.
+=650  \0$aPolitical science$vEarly works to 1800.
+=700  1\$aLord, Carnes.
+=907  \\$a.b12705007
+=902  \\$a140502
+=999  \\$b1$c960802$dm$ea$fc$g4
+=994  \\$atb
+=945  \\$aJC71.A41 L67 1985$g1$i33027003472036$j0$ltb   $h0$oh$p$0.00$r-$s-$t1$u19$v6$w0$x1$y.i13233294$z960802
+    </pre>
+   <hr>
+   <h4>MARC XML</h4>
+   <code>
+<record xmlns="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"><leader>01095nam  2200349Ia 4500</leader><controlfield tag="001">13920098</controlfield><controlfield tag="003">OCoLC</controlfield><controlfield tag="005">19960802131248.0</controlfield><controlfield tag="008">860723t19851984ilu      b    001 0 eng d</controlfield><datafield ind1=" " ind2=" " tag="010"><subfield code="a">84000215</subfield></datafield><datafield ind1=" " ind2=" " tag="020"><subfield code="a">0226026698 (pbk.)</subfield></datafield><datafield ind1=" " ind2=" " tag="035"><subfield code="a">.b12705007</subfield><subfield code="b">tb</subfield><subfield code="c">c</subfield></datafield><datafield ind1=" " ind2=" " tag="035"><subfield code="a">.b12705007</subfield><subfield code="b">tb</subfield><subfield code="c">c</subfield></datafield><datafield ind1=" " ind2=" " tag="040"><subfield code="a">KWW</subfield><subfield code="c">KWW</subfield></datafield><datafield ind1=" " ind2=" " tag="049"><subfield code="a">COCA</subfield></datafield><datafield ind1=" " ind2=" " tag="090"><subfield code="a">JC71.A41 L67 1985</subfield></datafield><datafield ind1="0" ind2=" " tag="100"><subfield code="a">Aristotle.</subfield></datafield><datafield ind1="1" ind2="0" tag="240"><subfield code="a">Politics.</subfield><subfield code="l">English.</subfield></datafield><datafield ind1="1" ind2="4" tag="245"><subfield code="a">The politics /</subfield><subfield code="c">Aristotle ; translated, and with an introduction, notes, and glossary by Carnes Lord.</subfield></datafield><datafield ind1=" " ind2=" " tag="250"><subfield code="a">Paperback ed.</subfield></datafield><datafield ind1=" " ind2=" " tag="260"><subfield code="a">Chicago :</subfield><subfield code="b">University of Chicago Press,</subfield><subfield code="c">1985, c1984.</subfield></datafield><datafield ind1=" " ind2=" " tag="300"><subfield code="a">284 p. ;</subfield><subfield code="c">24 cm.</subfield></datafield><datafield ind1=" " ind2=" " tag="500"><subfield code="a">Translation of: Politica.</subfield></datafield><datafield ind1=" " ind2=" " tag="504"><subfield code="a">Bibliography: p. 243-271.</subfield></datafield><datafield ind1=" " ind2=" " tag="500"><subfield code="a">Includes index.</subfield></datafield><datafield ind1=" " ind2="0" tag="650"><subfield code="a">Political science</subfield><subfield code="v">Early works to 1800.</subfield></datafield><datafield ind1="1" ind2=" " tag="700"><subfield code="a">Lord, Carnes.</subfield></datafield><datafield ind1=" " ind2=" " tag="907"><subfield code="a">.b12705007</subfield></datafield><datafield ind1=" " ind2=" " tag="902"><subfield code="a">140502</subfield></datafield><datafield ind1=" " ind2=" " tag="999"><subfield code="b">1</subfield><subfield code="c">960802</subfield><subfield code="d">m</subfield><subfield code="e">a</subfield><subfield code="f">c</subfield><subfield code="g">4</subfield></datafield><datafield ind1=" " ind2=" " tag="994"><subfield code="a">tb</subfield></datafield><datafield ind1=" " ind2=" " tag="945"><subfield code="a">JC71.A41 L67 1985</subfield><subfield code="g">1</subfield><subfield code="i">33027003472036</subfield><subfield code="j">0</subfield><subfield code="l">tb   </subfield><subfield code="h">0</subfield><subfield code="o">h</subfield><subfield code="p">$0.00</subfield><subfield code="r">-</subfield><subfield code="s">-</subfield><subfield code="t">1</subfield><subfield code="u">19</subfield><subfield code="v">6</subfield><subfield code="w">0</subfield><subfield code="x">1</subfield><subfield code="y">.i13233294</subfield><subfield code="z">960802</subfield></datafield></record>
+   </code>
+   <hr>
+   <h4>BIBFRAME RDF Graph (in Turtle format)</h4>
+   <pre>
+@prefix bf: <http://bibframe.org/vocab/> .
+@prefix madsrdf: <http://www.loc.gov/mads/rdf/v1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix relators: <http://id.loc.gov/vocabulary/relators/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://catalog.coloradocollege.edu/13920098annotation22> a bf:Annotation ;
+    bf:annotates <http://catalog.coloradocollege.edu/13920098> ;
+    bf:changeDate "1996-08-02T13:12" ;
+    bf:derivedFrom <http://catalog.coloradocollege.edu/13920098.marcxml.xml> ;
+    bf:descriptionConventions <http://id.loc.gov/vocabulary/descriptionConventions/aacr2> ;
+    bf:descriptionSource [ a bf:Identifier ;
+            bf:identifierScheme "descriptionSource" ;
+            bf:identifierValue "KWW" ] ;
+    bf:generationProcess "DLC transform-tool:2014-08-29-T17:05:00" .
+
+<http://catalog.coloradocollege.edu/13920098instance23> a bf:Instance,
+        bf:Monograph ;
+    bf:derivedFrom <http://catalog.coloradocollege.edu/13920098.marcxml.xml> ;
+    bf:dimensions "24 cm." ;
+    bf:edition "Paperback ed." ;
+    bf:instanceOf <http://catalog.coloradocollege.edu/13920098> ;
+    bf:instanceTitle <http://catalog.coloradocollege.edu/13920098title32> ;
+    bf:isbn10 [ a bf:Identifier ;
+            bf:identifierQualifier "paperback" ;
+            bf:identifierScheme "isbn" ;
+            bf:identifierValue "0226026698" ],
+        <http://isbn.example.org/0226026698> ;
+    bf:isbn13 <http://isbn.example.org/9780226026695> ;
+    bf:lccn [ a bf:Identifier ;
+            bf:identifierScheme "lccn" ;
+            bf:identifierValue "84000215" ] ;
+    bf:modeOfIssuance "monographic" ;
+    bf:note "Includes index.",
+        "Translation of: Politica." ;
+    bf:providerStatement "Chicago : University of Chicago Press, 1985, c1984." ;
+    bf:publication [ a bf:Provider ;
+            bf:providerDate "1985, c1984" ;
+            bf:providerName [ a bf:Organization ;
+                    bf:label "University of Chicago Press" ] ;
+            bf:providerPlace [ a bf:Place ;
+                    bf:label "Chicago :" ] ] ;
+    bf:responsibilityStatement "Aristotle ; translated, and with an introduction, notes, and glossary by Carnes Lord." ;
+    bf:supplementaryContentNote "Bibliography: p. 243-271." ;
+    bf:systemNumber [ a bf:Identifier ;
+            bf:identifierAssigner "tb" ;
+            bf:identifierScheme "systemNumber" ;
+            bf:identifierValue ".b12705007" ],
+        [ a bf:Identifier ;
+            bf:identifierAssigner "tb" ;
+            bf:identifierScheme "systemNumber" ;
+            bf:identifierValue ".b12705007" ] ;
+    bf:title "The politics (pbk.)",
+        "politics (pbk.)"@x-bf-sortable ;
+    bf:titleStatement "The politics" .
+
+<http://catalog.coloradocollege.edu/13920098agent14> a bf:Agent ;
+    bf:label "Aristotle." .
+
+<http://catalog.coloradocollege.edu/13920098classification19> a bf:Classification ;
+    bf:classificationNumber "JC71.A41 L67 1985" ;
+    bf:classificationScheme "" .
+
+<http://catalog.coloradocollege.edu/13920098person13> a bf:Person ;
+    bf:authorizedAccessPoint "Aristotle." ;
+    bf:hasAuthority [ a madsrdf:Authority ;
+            madsrdf:authoritativeLabel "Aristotle." ] ;
+    bf:label "Aristotle." .
+
+<http://catalog.coloradocollege.edu/13920098person14> a bf:Person ;
+    bf:authorizedAccessPoint "Lord, Carnes." ;
+    bf:hasAuthority [ a madsrdf:Authority ;
+            madsrdf:authoritativeLabel "Lord, Carnes." ] ;
+    bf:label "Lord, Carnes." .
+
+<http://catalog.coloradocollege.edu/13920098title11> a bf:Title ;
+    bf:titleValue "The politics" .
+
+<http://catalog.coloradocollege.edu/13920098title32> a bf:Title ;
+    bf:titleValue "The politics" .
+
+<http://catalog.coloradocollege.edu/13920098title7> a bf:Title ;
+    bf:titleValue "Politics." .
+
+<http://catalog.coloradocollege.edu/13920098topic18> a bf:Topic ;
+    bf:authorizedAccessPoint "Political science--Early works to 1800" ;
+    bf:hasAuthority [ a madsrdf:Authority,
+                madsrdf:ComplexSubject ;
+            madsrdf:authoritativeLabel "Political science--Early works to 1800"@en ] ;
+    bf:label "Political science--Early works to 1800" .
+
+<http://catalog.coloradocollege.edu/13920098work9> a bf:Work ;
+    bf:authorizedAccessPoint "Politics." ;
+    bf:creator <http://catalog.coloradocollege.edu/13920098agent14> ;
+    bf:title "Politics." ;
+    madsrdf:authoritativeLabel "Politics." .
+
+<http://catalog.coloradocollege.edu/13920098> a bf:Text,
+        bf:Work ;
+    bf:authorizedAccessPoint "Aristotle. Politics",
+        "aristotlelordcarnespoliticsenglishengworktext"@x-bf-hashable ;
+    bf:classification <http://catalog.coloradocollege.edu/13920098classification19> ;
+    bf:contributor <http://catalog.coloradocollege.edu/13920098person14> ;
+    bf:creator <http://catalog.coloradocollege.edu/13920098person13> ;
+    bf:derivedFrom <http://catalog.coloradocollege.edu/13920098.marcxml.xml> ;
+    bf:label "Politics. English." ;
+    bf:language <http://id.loc.gov/vocabulary/languages/eng> ;
+    bf:note "Includes index.",
+        "Translation of: Politica." ;
+    bf:subject <http://catalog.coloradocollege.edu/13920098topic18> ;
+    bf:title "The politics",
+        "politics"@x-bf-sortable ;
+    bf:translationOf <http://catalog.coloradocollege.edu/13920098work9> ;
+    bf:workTitle <http://catalog.coloradocollege.edu/13920098title11>,
+        <http://catalog.coloradocollege.edu/13920098title7> ;
+    madsrdf:authoritativeLabel "Politics. English." .
+   </pre>
+  </div>
+ 
+{% endblock %}

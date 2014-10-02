@@ -60,55 +60,8 @@
  
     <div class="large-9 columns">
       <div class="panel">
-        <div class="row">
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thing">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=CreativeWork">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Action&Event">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Organization&Person">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
- 
-          <div class="large-3 columns end">
-            <img src="http://placehold.it/600x500&text=Thumbnail">
-          </div>
+        <div id="animation">
+
         </div>
       </div>
  
@@ -133,4 +86,25 @@
  
   </div>
  
+{% endblock %}
+
+
+{% block more_js %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/svg.js/1.0.0-rc.8/svg.min.js"></script>
+<script>
+  function SchemaSlideViewModel() {
+    var self = this;
+    self.draw = SVG("animation").size(800, 600);
+    self.web_editor = self.draw.group();
+    self.web_editor.add(self.draw.text("Schema.org Web Editor"));
+    self.schema_rdfs = self.draw.group();
+    self.schema_rdfs.add(self.draw.image("{{ url_for('static', filename='img/schema-rdfs-org.png') }}"));
+    self.schema_rdfs.x(250);
+    self.schema_rdfs_json = self.draw.group().add(self.draw.image("{{ url_for('static', filename='img/json.png') }}"));
+    self.schema_rdfs_json.move(250, 300);
+
+  }
+  ko.applyBindings(new SchemaSlideViewModel());
+</script>
 {% endblock %}

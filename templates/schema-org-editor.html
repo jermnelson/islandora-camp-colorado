@@ -94,18 +94,112 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/svg.js/1.0.0-rc.8/svg.min.js"></script>
 <script>
+
+
   function SchemaSlideViewModel() {
     var self = this;
-    self.draw = SVG("animation").size(800, 600);
-    self.web_editor = self.draw.group();
-    self.web_editor.add(self.draw.text("Schema.org Web Editor"));
-    self.schema_rdfs = self.draw.group();
-    self.schema_rdfs.add(self.draw.image("{{ url_for('static', filename='img/schema-rdfs-org.png') }}"));
-    self.schema_rdfs.x(250);
-    self.schema_rdfs_json = self.draw.group().add(self.draw.image("{{ url_for('static', filename='img/json.png') }}"));
-    self.schema_rdfs_json.move(250, 300);
+    self.draw = SVG("animation").size(9090909090909090900, 600);
+    self.activeSlide = self.draw.group();
+
+    self.web_editor_head = self.draw.group();
+    self.web_editor_head.add(self.draw.text("Web Editor Workflow").font({ size: 36 }));
+
+    self.resetSlide = function() {
+     if(self.activeSlide) { 
+      self.activeSlide.remove();
+     } 
+     self.activeSlide = self.draw.group();
+    }
+
+     self.commandFont = { 
+        size: 24, 
+        family: 'Courier',  
+        weight: 'bold'
+      };
+
+    self.commandColor = { color:  '#009900' };
+
+
+    self.iterateList = function(list, x, y) {
+      if(list.length <= 0) {
+        //self.draw.text(list[0]).font(self.commandFont).fill(self.commandColor).move(x, y+11);
+        return
+      } else {
+        var currentText = self.draw.text(list[0]).font(self.commandFont).fill(self.commandColor);
+        self.activeSlide.add(currentText);
+        currentText.hide().move(x, y);
+        currentText.show().animate(250).after(function() {
+         self.iterateList(list.slice(1), x+15, y);
+        });
+      }
+
+    }
+
+    self.stepOne = function() {
+      self.resetSlide();
+      var commandList = ["$ source jpn-py3-dev/bin/activate",
+                         "$ cd schema_editor/fedora",
+                         "$ java -jar fcrepo-webapp-4.0.0-beta-03-jetty-console.war &",
+                         "$ cd ../",
+                         "$ python editor.py"
+                         ];
+      var x_start = 5; 
+      var y_start = 50;
+      var total_time = 0;
+      for(i in commandList) {
+        var command = commandList[i];
+        window.setTimeout(self.iterateList, total_time, command, x_start, y_start);
+        y_start += 30;
+        total_time += command.length * 250;
+      }
+      window.setTimeout(function() {
+        var runningServer = self.draw.text("* Running on http://0.0.0.0:8100/\n* Restarting with reloader");
+        runningServer.font(self.commandFont).fill(self.commandColor).move(x_start+5, y_start + 20)
+        self.activeSlide.add(runningServer);
+      }, total_time + 1000);
+      window.setTimeout(self.stepTwo, total_time + 4000);
+     
+    }
+
+    self.stepTwo = function() {
+     var init_steps = ["Schema.org editor loaded into web-browser by visiting http://0.0.0.0:8100",
+                       "http://schema.rdfs.org/all.json loaded into editor"];
+     self.resetSlide();
+     var editor = self.draw.group();
+     editor.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-1.png') }}").scale(0.5, 0.5));
+     editor.hide();
+     self.activeSlide.add(editor);
+     var schema_rdfs = self.draw.group();
+     schema_rdfs.add(self.draw.image("{{ url_for('static', filename='img/schema-rdfs-org.png') }}"));
+     schema_rdfs.move(450, 45).scale(0.75, 0.75);
+     schema_rdfs.hide();
+     self.activeSlide.add(schema_rdfs);
+     schema_rdfs_json = self.draw.group().add(self.draw.rect(150, 100).fill({ color: '#FFFFFF' }).stroke({ width: 1, color: '#f05' }));
+     schema_rdfs_json.add(self.draw.image("{{ url_for('static', filename='img/json.png') }}").move(5,5));
+     self.activeSlide.add(schema_rdfs_json);
+     schema_rdfs_json.add(self.draw.text("RDF Ontology\nall.json").font({ size: 18 }).y(40));
+     schema_rdfs_json.move(schema_rdfs.x() + 100, schema_rdfs.y() + 250);
+     schema_rdfs_json.hide();
+     var headline = self.draw.text(init_steps[0]).font({ size: 22 });
+     self.activeSlide.add(headline);
+     headline.y(self.web_editor_head.y() + self.web_editor_head.bbox().height + 10).animate().after(function() {
+       editor.show();
+       editor.animate(3000, ">").y(100).after(function() {
+        headline.text(init_steps[1]);
+        editor.animate(2000).scale(0.75, 0.75).after(function() {
+          schema_rdfs.show();
+          schema_rdfs_json.show().animate(2000).dy(40).after(function() {
+           schema_rdfs_json.animate(2000).dx(-500).after(function() {
+            schema_rdfs_json.animate(2000).dy(-50);
+           });
+          });
+        });
+      });
+     });
+   }
 
   }
-  ko.applyBindings(new SchemaSlideViewModel());
+  var schema_view_model = new SchemaSlideViewModel();
+  ko.applyBindings(schema_view_model);
 </script>
 {% endblock %}

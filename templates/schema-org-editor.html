@@ -163,10 +163,11 @@
 
     self.stepTwo = function() {
      var init_steps = ["Schema.org editor loaded into web-browser by visiting http://0.0.0.0:8100",
-                       "http://schema.rdfs.org/all.json loaded into editor"];
+                       "http://schema.rdfs.org/all.json loaded into editor",
+                       "New Schema.org Fedora Objects can be created, Fedora URL in display" ];
      self.resetSlide();
      var editor = self.draw.group();
-     editor.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-1.png') }}").scale(0.5, 0.5));
+     editor.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-loading.png') }}").scale(0.4, 0.4));
      editor.hide();
      self.activeSlide.add(editor);
      var schema_rdfs = self.draw.group();
@@ -174,10 +175,10 @@
      schema_rdfs.move(450, 45).scale(0.75, 0.75);
      schema_rdfs.hide();
      self.activeSlide.add(schema_rdfs);
-     schema_rdfs_json = self.draw.group().add(self.draw.rect(150, 100).fill({ color: '#FFFFFF' }).stroke({ width: 1, color: '#f05' }));
-     schema_rdfs_json.add(self.draw.image("{{ url_for('static', filename='img/json.png') }}").move(5,5));
+     schema_rdfs_json = self.draw.group().add(self.draw.rect(150, 100).fill({ color: '#FFE347' }).stroke({ width: 1, color: '#f05' }));
+     schema_rdfs_json.add(self.draw.image("{{ url_for('static', filename='img/json.png') }}").move(45,55));
      self.activeSlide.add(schema_rdfs_json);
-     schema_rdfs_json.add(self.draw.text("RDF Ontology\nall.json").font({ size: 18 }).y(40));
+     schema_rdfs_json.add(self.draw.text("RDF Ontology\nall.json").font({ size: 18 }).move(5, 10));
      schema_rdfs_json.move(schema_rdfs.x() + 100, schema_rdfs.y() + 250);
      schema_rdfs_json.hide();
      var headline = self.draw.text(init_steps[0]).font({ size: 22 });
@@ -190,13 +191,120 @@
           schema_rdfs.show();
           schema_rdfs_json.show().animate(2000).dy(40).after(function() {
            schema_rdfs_json.animate(2000).dx(-500).after(function() {
-            schema_rdfs_json.animate(2000).dy(-50);
+            schema_rdfs_json.animate(2000).dy(-130).after(function() {
+               self.stepTwoAutoSuggest();
+               {#
+                schema_rdfs_json.hide();
+                schema_rdfs.hide();
+                editor.hide(); 
+                  var newFedoraObject = self.draw.group();
+                  self.activeSlide.add(newFedoraObject);
+                  newFedoraObject.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-2.png') }}").scale(0.7, 0.7));
+                  newFedoraObject.hide().y(100);
+                  headline.text(init_steps[3]);
+                  newFedoraObject.show().animate(2000).dx(20).after(function() {
+                    var annotations = self.draw.group();
+                    annotations.add(self.draw.ellipse(250, 50).fill({ color: '#FFFFFF'}).stroke({ width: 1, color: '#0000FF'}));
+                 
+                  }); #}
+              }); 
+            });
            });
           });
         });
       });
-     });
    }
+
+   self.stepTwoAutoSuggest = function() {
+    var help = ["Autosuggest for Every Schema Type can now found by typing"];
+    self.resetSlide();
+    var autoSuggest = self.draw.group();
+    self.activeSlide.add(autoSuggest);
+    autoSuggest.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-1.png') }}").scale(0.2, 0.2));
+    autoSuggest.move(10, 100);
+    autoSuggest.animate(3000).scale(4, 4).after(function() {
+     var autoSuggestNew = self.draw.group();
+     self.activeSlide.add(autoSuggestNew );
+     var autoSuggestDesc = self.draw.text('Selecting a Schema.org Type and\nclicking on the "New" button creates the object');
+     autoSuggestNew.add(autoSuggestDesc);
+     autoSuggestDesc.font({ size: 22 }).move(550, 200);
+     var autoSuggestNewLine = self.draw.line(autoSuggestDesc.x()-120, autoSuggestDesc.y()+33, autoSuggestDesc.x()-5, autoSuggestDesc.y()+33);
+     autoSuggestNewLine.stroke({ width: 2 });
+     autoSuggestNew.add(autoSuggestNewLine);
+     var autoSuggestNewLineArrow = self.draw.polygon();
+     autoSuggestNewLineArrow.stroke({ width: 2 });
+     autoSuggestNewLineArrow.plot([[(autoSuggestNewLine.x()-5), autoSuggestNewLine.y()], 
+                                   [autoSuggestNewLine.x(), (autoSuggestNewLine.y()-5)], 
+                                   [autoSuggestNewLine.x(), (autoSuggestNewLine.y()+5)]]);
+     autoSuggestNew.add(autoSuggestNewLineArrow);
+     autoSuggestNew.animate(2000).dx(-40).after(function() {
+      autoSuggestNew.hide();
+      var autoSuggestFind = self.draw.group();
+      self.activeSlide.add(autoSuggestFind);
+      var autoSuggestFindDesc = self.draw.text('Selecting a Schema.org Type and\nclicking on the "Find" button\nPops up a list of all existing\nFedora Objects of that type');
+      autoSuggestFindDesc.font({ size: 22 }).move(375, 50);
+      autoSuggestFind.add(autoSuggestFindDesc);
+      var autoSuggestFindLine = self.draw.line(autoSuggestFindDesc.x() + 75, 160, autoSuggestFindDesc.x()+75, 200);
+      autoSuggestFindLine.stroke({ width: 2 });
+      autoSuggestFind.add(autoSuggestFindLine);
+      var autoSuggestFindArrow = self.draw.polygon();
+      autoSuggestFindArrow.stroke({ width: 2 });
+      autoSuggestFindArrow.plot([[autoSuggestFindLine.x(), 205],
+                                 [autoSuggestFindLine.x()-5, 200],
+                                 [autoSuggestFindLine.x()+5, 200]]);
+      autoSuggestFind.add(autoSuggestFindArrow);
+      autoSuggestFind.animate(3000).dy(15).after(function() {
+        autoSuggest.hide();
+        autoSuggestFind.hide();
+        var findDialog = self.draw.group();
+        self.activeSlide.add(findDialog);
+        findDialog.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-3.png') }}").move(40,100).scale(0.8, 0.8));
+       });
+     });
+    });
+   }
+
+  self.stepTwoEntityCRUD = function() {
+    self.resetSlide();
+    var help = ["Adding new or editing existing\nSchema.org Fedora Object\nuses same User Interface",
+                "Each Schema.org Type's properties\ncan be added/edited/deleted\nthrough AJAX call",
+                'Existing Schema.org can be\nedited by inputing URI in\ninput field and clicking\non the "Edit" button'];
+    var newEntity = self.draw.group();
+    descriptionFont = { size: 22 };
+    self.activeSlide.add(newEntity);
+    var descriptions = self.draw.group();
+    var description = self.draw.text(help[0]);
+    descriptions.add(description);
+    var description1 = self.draw.text(help[1])
+    descriptions.add(description1);
+    description1.font(descriptionFont).hide();
+    newEntity.add(description.font(descriptionFont).y(60));
+    var crudImage = self.draw.image("{{ url_for('static', filename='img/schema-org-editor-2.png') }}");
+    crudImage.scale(0.6,0.6).move(350, 10);
+    newEntity.font(descriptionFont);
+    self.activeSlide.add(crudImage);
+    window.setTimeout(function() {
+     description.animate(2500).dy(85).after(function() {
+       description.fill({ color: '#A0A0A0' });
+       description1.y(60).show(); 
+       var addReplaceDelete = self.draw.group();
+       self.activeSlide.add(addReplaceDelete);
+       addReplaceDelete.add(self.draw.ellipse(110, 40).fill('none').stroke({ color: '#FF0000', width: 2 }).move(75, 150));
+       addReplaceDelete.animate(2000).dmove(330, 120);
+     });
+    }, 2000);
+
+    window.setTimeout(function() {
+     description1
+     description1.fill({ color: '#A0A0A0' });
+     descriptions.animate(2500).dy(200).after(function() {
+       var description2 = self.draw.text(help[2]);
+       description2.font(descriptionFont);
+       descriptions.add(description2);
+     });
+    // description.text(help[2]);
+    }, 6000);
+  }
 
   }
   var schema_view_model = new SchemaSlideViewModel();

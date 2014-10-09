@@ -41,7 +41,7 @@
           <img src="http://placehold.it/80x80&text=[img]"/></div>
         <div class="large-10 columns">
           <p><strong data-bind="text: title"></strong> (<span data-bind="text: copyright"></span>) 
-           by {#<!-- ko foreach: author --><span data-bind="text: name"></span>
+           by {#<!-- ko foreach: author --><span data-bind="text: loadAuthor($data)"></span>
              <!-- /ko -->. #}
             Available at <a data-bind="attr: { href: url}, text: url"></a>.
           </p>
@@ -58,7 +58,7 @@
 {% endblock %}
 
 {% block more_js %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+<script src="{{ url_for('static', filename='js/knockout-3.2.0.js') }}"></script>
 <script>
   var referenceURIs = [  
     '/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
@@ -88,30 +88,32 @@
         reference['url'] = null;
        }
        for(j in data['author']) {
-         var author_uri = data['author'][j]['@id'].split(".info")[1] + ".json";
-         $.getJSON(author_uri, function(author_data) {
-            reference['author'].push({"name": author_data['name'][0]['@value']});
-         });
+         author_uri = data['author'][j]['@id'].split(".info")[1] + ".json";
+         reference['author'].push(author_uri);
        }
     }).done(function() {
-      console.log("Reference is " + reference['id']);
       return reference
     });
   }
 
   function ReferenceViewModel() {
    var self = this;
-   self.references = ko.observableArray();
 
-   for(i in referenceURIs) {
-     var refURI = referenceURIs[i];
-     var reference = loadEntity(refURI);
-     console.log("REference is " + reference['id']);
-     self.references.push(reference);
+   self.loadAuthor = function(author_uri) {
+    $.getJSON(author_uri, function(author_data) {
+        return author_data['name'][0]['@value'];
+    });
    }
+   self.references = ko.observableArray();
   }
 
   var ref_view_model = new ReferenceViewModel();
+  for(i in referenceURIs) {
+     var refURI = referenceURIs[i];
+     var reference = null;
+     reference = loadEntity(refURI);
+     ref_view_model.references.push(reference);
+   }
   ko.applyBindings(ref_view_model);
 </script>
 {% endblock %}

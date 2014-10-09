@@ -200,6 +200,7 @@
    self.stepThree = function() {
     var help = ["Autosuggest for Every Schema Type can now found by typing"];
     self.resetSlide();
+    self.web_editor_head.text("HTML Autocomplete/Autosuggestion");
     var autoSuggest = self.draw.group();
     self.activeSlide.add(autoSuggest);
     autoSuggest.add(self.draw.image("{{ url_for('static', filename='img/schema-org-editor-1.png') }}").scale(0.2, 0.2));

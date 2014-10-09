@@ -7,27 +7,7 @@
     <div class="large-12 columns">
       <h1>Schema.org Web Editor</h1>
       <div id="animation">
-
       </div>
-      {#
-      <ul class="schema-org-orbit" data-orbit> 
-        <li class="active"> 
-          <img src="{{ url_for('static', filename='img/schema-org-editor-1.png') }}" 
-               alt="Schema.org Web Editor autocomplete" /> 
-          <div class="orbit-caption">Schema.org Web Editor Auto-complete
-          </div> 
-        </li> 
-        <li > 
-          <img src="{{ url_for('static', filename='img/schema-org-editor-2.png') }}" 
-            /> 
-            <div class="orbit-caption">Schema.org  </div> 
-        </li> 
-        <li> 
-          <img src="{{ url_for('static', filename='img/schema-org-editor-3.png') }}" 
-            alt="Loading Existing Schema.org Types" /> 
-          <div class="orbit-caption"> Caption </div> 
-        </li> 
-     </ul> #}
     </div>
   </div>
  
@@ -64,10 +44,17 @@
  
     <div class="large-9 columns">
       <div class="panel">
+      <ul class="button-group">
+       <li><a href="#" class="button" data-bind="click: stepOne">Start Editor</a></li>
+       <li><a href="#" class="button" data-bind="click: stepTwo">Loading</a></li>
+       <li><a href="#" class="button" data-bind="click: stepThree">Auto-suggestion</a></li>
+       <li><a href="#" class="button" data-bind="click: stepFour">Direct Editing</a></li>
+
+      </ul>
       </div>
  
       <div class="row">
-        <div class="large-6 columns">
+        <div class="large-10 columns">
           <div class="panel">
             <h5>Schema.org Examples</h5>
             <p>Schema.org examples using HTML, RDF, Turtle, and JSON-LD</p>
@@ -75,13 +62,6 @@
           </div>
         </div>
  
-        <div class="large-6 columns">
-          <div class="panel">
-            <h5>Subheader</h5>
-            <p>Sed sit amet posuere erat. Quisque in ipsum non augue euismod dapibus non et eros.</p>
-            <a href="#" class="small button">Link</a>
-          </div>
-        </div>
       </div>
     </div>
  
@@ -98,11 +78,13 @@
 
   function SchemaSlideViewModel() {
     var self = this;
-    self.draw = SVG("animation").size(9090909090909090900, 600);
-    self.activeSlide = self.draw.group();
 
-    self.web_editor_head = self.draw.group();
-    self.web_editor_head.add(self.draw.text("Web Editor Workflow").font({ size: 36 }));
+    self.draw = SVG("animation").size(900, 600);
+    self.activeSlide = self.draw.group();
+    self.activeCommand = self.draw.group();
+
+    self.web_editor_head = self.draw.text("Web Editor Workflow");
+    self.web_editor_head.font({ size: 36 }).fill({ color: '#6f6f6f' }); 
 
     self.resetSlide = function() {
      if(self.activeSlide) { 
@@ -137,6 +119,7 @@
 
     self.stepOne = function() {
       self.resetSlide();
+      self.web_editor_head.text("Start editor web-server and Fedora 4");
       var commandList = ["$ source jpn-py3-dev/bin/activate",
                          "$ cd schema_editor/fedora",
                          "$ java -jar fcrepo-webapp-4.0.0-beta-03-jetty-console.war &",
@@ -157,11 +140,11 @@
         runningServer.font(self.commandFont).fill(self.commandColor).move(x_start+5, y_start + 20)
         self.activeSlide.add(runningServer);
       }, total_time + 1000);
-      window.setTimeout(self.stepTwo, total_time + 4000);
      
     }
 
     self.stepTwo = function() {
+     self.web_editor_head.text("Opening and Loading Editor in Web Browser");
      var init_steps = ["Schema.org editor loaded into web-browser by visiting http://0.0.0.0:8100",
                        "http://schema.rdfs.org/all.json loaded into editor",
                        "New Schema.org Fedora Objects can be created, Fedora URL in display" ];
@@ -192,7 +175,6 @@
           schema_rdfs_json.show().animate(2000).dy(40).after(function() {
            schema_rdfs_json.animate(2000).dx(-500).after(function() {
             schema_rdfs_json.animate(2000).dy(-130).after(function() {
-               self.stepTwoAutoSuggest();
                {#
                 schema_rdfs_json.hide();
                 schema_rdfs.hide();
@@ -215,7 +197,7 @@
       });
    }
 
-   self.stepTwoAutoSuggest = function() {
+   self.stepThree = function() {
     var help = ["Autosuggest for Every Schema Type can now found by typing"];
     self.resetSlide();
     var autoSuggest = self.draw.group();
@@ -264,43 +246,80 @@
     });
    }
 
-  self.stepTwoEntityCRUD = function() {
+  self.stepFour = function() {
     self.resetSlide();
+    self.web_editor_head.text("Direct Editing of Schema.org Objects");
+    self.web_editor_head.front();
     var help = ["Adding new or editing existing\nSchema.org Fedora Object\nuses same User Interface",
                 "Each Schema.org Type's properties\ncan be added/edited/deleted\nthrough AJAX call",
-                'Existing Schema.org can be\nedited by inputing URI in\ninput field and clicking\non the "Edit" button'];
+                'Existing Schema.org can be\nedited by inputing URI\ninput field and clicking\non the "Edit" button'];
     var newEntity = self.draw.group();
     descriptionFont = { size: 22 };
     self.activeSlide.add(newEntity);
     var descriptions = self.draw.group();
     var description = self.draw.text(help[0]);
-    descriptions.add(description);
     var description1 = self.draw.text(help[1])
-    descriptions.add(description1);
+    var description2 = self.draw.text(help[2]);
     description1.font(descriptionFont).hide();
+    description2.font(descriptionFont).hide();
+    self.activeSlide.add(description);
+    self.activeSlide.add(description1);
+    self.activeSlide.add(description2);
     newEntity.add(description.font(descriptionFont).y(60));
     var crudImage = self.draw.image("{{ url_for('static', filename='img/schema-org-editor-2.png') }}");
+    var uriLoadImage = self.draw.image("{{ url_for('static', filename='img/schema-org-editor-4.png') }}");
+    uriLoadImage.scale(0.7, 0.7).hide();
+
     crudImage.scale(0.6,0.6).move(350, 10);
-    newEntity.font(descriptionFont);
     self.activeSlide.add(crudImage);
+    var addReplaceDelete = self.draw.group();
+    self.activeSlide.add(addReplaceDelete);
     window.setTimeout(function() {
-     description.animate(2500).dy(85).after(function() {
+     description.animate(2500).dy(100).after(function() {
        description.fill({ color: '#A0A0A0' });
        description1.y(60).show(); 
-       var addReplaceDelete = self.draw.group();
-       self.activeSlide.add(addReplaceDelete);
        addReplaceDelete.add(self.draw.ellipse(110, 40).fill('none').stroke({ color: '#FF0000', width: 2 }).move(75, 150));
        addReplaceDelete.animate(2000).dmove(330, 120);
+ 
      });
     }, 2000);
 
+    var inputBox = self.draw.rect(800, 60);
+    inputBox.fill({ color: '#FFFFFF' }).hide();
+    self.activeSlide.add(inputBox);
     window.setTimeout(function() {
-     description1
-     description1.fill({ color: '#A0A0A0' });
-     descriptions.animate(2500).dy(200).after(function() {
-       var description2 = self.draw.text(help[2]);
-       description2.font(descriptionFont);
-       descriptions.add(description2);
+     description1.show();
+     description1.mouseover(function() { this.pause() });
+     description1.mouseout(function() { this.play() });
+     description1.animate(2500).dy(200).after(function() {
+       description1.fill({ color: '#A0A0A0' });
+       description2.y(60).show();
+       crudImage.hide();
+       addReplaceDelete.hide();
+       uriLoadImage.move(350, 10).show();  
+       self.commandFont = { 
+        size: 24, 
+        family: 'Courier',
+        weight: 'bold'
+        };
+       self.commandColor = { color:  '#0000FF' };
+       self.activeCommand = self.draw.group();
+       self.web_editor_head.front();
+       var uriLoad = self.draw.group();
+       uriLoad.add(uriLoadImage);
+       uriLoadImage.dx(-500).animate(3000).scale(2, 2).after(function() {
+         uriLoadImage.dy(50);
+         uriLoadImage.back();
+         description.hide();
+         description1.hide();
+         description2.hide();
+         inputBox.move(100, 413).show();
+         inputBox.forward();
+         self.iterateList("http://localhost:8080/rest/schema/Book/bd722834-e55a-4f78-bc13-fffafe8d7423", 110, 420); 
+                          
+       });
+       //descriptions.add(description2);
+       
      });
     // description.text(help[2]);
     }, 6000);

@@ -20,25 +20,10 @@
     <div class="large-3 columns ">
       <div class="panel">
         <a href="#"><img src="http://placehold.it/300x240&text=[img]"/></a>
-        <h5><a href="#">Your Name</a></h5>
+        <h5><a href="#">References</a></h5>
           <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
           <section class="section">
-            <h5 class="title"><a href="#">Section 1</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 2</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 3</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 4</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 5</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 6</a></h5>
+            <h5 class="title"><a href="#">Books</a></h5>
           </section>
         </div>
  
@@ -47,78 +32,86 @@
     
      
      
-    <div class="large-6 columns">
- 
-       
+    <div class="large-8 columns">
+
+     <span data-bind="foreach: references"> 
       <div class="row">
-        <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
+        <a data-bind="attr: { name: id }"></a>
+        <div class="large-2 columns small-3">
+          <img src="http://placehold.it/80x80&text=[img]"/></div>
         <div class="large-10 columns">
-          <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
-          <ul class="inline-list">
-            <li><a href="">Reply</a></li>
-            <li><a href="">Share</a></li>
-          </ul>
- 
- 
-          <h6>2 Comments</h6>
-          <div class="row">
-            <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]"/></div>
-            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
-          </div>
-          <div class="row">
-            <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]"/></div>
-            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
-          </div>
-        </div>
+          <p><strong data-bind="text: title"></strong> (<span data-bind="text: copyright"></span>) 
+           by {#<!-- ko foreach: author --><span data-bind="text: name"></span>
+             <!-- /ko -->. #}
+            Available at <a data-bind="attr: { href: url}, text: url"></a>.
+          </p>
       </div>
-       
+      <hr>
+     </span>
  
-      <hr/>
- 
-       
-      <div class="row">
-        <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
-        <div class="large-10 columns">
-          <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
-          <ul class="inline-list">
-            <li><a href="">Reply</a></li>
-            <li><a href="">Share</a></li>
-          </ul>
-        </div>
-      </div>
-       
- 
-      <hr/>
- 
-       
-      <div class="row">
-        <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
-        <div class="large-10 columns">
-          <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
-          <ul class="inline-list">
-            <li><a href="">Reply</a></li>
-            <li><a href="">Share</a></li>
-          </ul>
- 
- 
-          <h6>2 Comments</h6>
-          <div class="row">
-            <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]"/></div>
-            <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
-          </div>
-        </div>
-      </div>
-       
  
     </div>
- 
      
-     
-    <aside class="large-3 columns hide-for-small">
-      <p><img src="http://placehold.it/300x440&text=[ad]"/></p>
-      <p><img src="http://placehold.it/300x440&text=[ad]"/></p>
-    </aside>
  
   </div>
  
+{% endblock %}
+
+{% block more_js %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+<script>
+  var referenceURIs = [  
+    '/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
+    '/WebPage/bibframe.json',
+    '/WebPage/getting-started-schema-org.json',
+    '/WebPage/schema-org.json' 
+  ];
+
+  function loadEntity(uri) {
+   reference = {'author': []};
+   $.getJSON(uri, 
+      function(data) {
+       reference['id'] = data['@id'];
+       if('headline' in data) {
+         reference['title'] = data['headline'][0]['@value'];
+       } else {
+         reference['title'] = data['name'][0]['@value'];
+       }
+       if('copyright' in data) {
+        reference['copyright'] = data['copyrightYear'][0]['@value'];
+       } else {
+        reference['copyright'] = 2014;
+       }
+       if('url' in data) {
+        reference['url'] = data['url'][0]['@value'];
+       } else {
+        reference['url'] = null;
+       }
+       for(j in data['author']) {
+         var author_uri = data['author'][j]['@id'].split(".info")[1] + ".json";
+         $.getJSON(author_uri, function(author_data) {
+            reference['author'].push({"name": author_data['name'][0]['@value']});
+         });
+       }
+    }).done(function() {
+      console.log("Reference is " + reference['id']);
+      return reference
+    });
+  }
+
+  function ReferenceViewModel() {
+   var self = this;
+   self.references = ko.observableArray();
+
+   for(i in referenceURIs) {
+     var refURI = referenceURIs[i];
+     var reference = loadEntity(refURI);
+     console.log("REference is " + reference['id']);
+     self.references.push(reference);
+   }
+  }
+
+  var ref_view_model = new ReferenceViewModel();
+  ko.applyBindings(ref_view_model);
+</script>
 {% endblock %}

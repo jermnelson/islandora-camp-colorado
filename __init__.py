@@ -13,6 +13,7 @@ from flask import abort, Flask, g, jsonify, redirect, render_template, request
 
 presentation = Flask(__name__)
 
+
 @presentation.route("/<name>")
 @presentation.route("/<name>.html")
 def slide(name):

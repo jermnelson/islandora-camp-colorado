@@ -9,7 +9,10 @@
 <div class="row">
     <div class="large-12 columns">
       <div class="panel" style="background-color: rgb(181,197,159) !important;">
-        <h1>References</h1>
+       <h1>References for</h1> 
+       <h3>Using Fedora 4 as a Bibliographic Linked Data Store</h3>
+
+  
       </div>
     </div>
   </div>
@@ -19,14 +22,8 @@
      
     <div class="large-3 columns ">
       <div class="panel">
-        <a href="#"><img src="http://placehold.it/300x240&text=[img]"/></a>
-        <h5><a href="#">References</a></h5>
-          <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
-          <section class="section">
-            <h5 class="title"><a href="#">Books</a></h5>
-          </section>
-        </div>
- 
+        <a href="#"><img src="{{ url_for('static', filename='img/islandora_camp_co2014.png') }}"/></a>
+        <h5>References</h5>
       </div>
     </div>
     
@@ -41,8 +38,8 @@
           <img src="http://placehold.it/80x80&text=[img]"/></div>
         <div class="large-10 columns">
           <p><strong data-bind="text: title"></strong> (<span data-bind="text: copyright"></span>) 
-           by {#<!-- ko foreach: author --><span data-bind="text: loadAuthor($data)"></span>
-             <!-- /ko -->. #}
+           by <!-- ko foreach: author --><span data-bind="text: name"></span>
+             <!-- /ko -->. 
             Available at <a data-bind="attr: { href: url}, text: url"></a>.
           </p>
       </div>
@@ -60,17 +57,54 @@
 {% block more_js %}
 <script src="{{ url_for('static', filename='js/knockout-3.2.0.js') }}"></script>
 <script>
-  var referenceURIs = [  
-    '/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
-    '/WebPage/bibframe.json',
-    '/WebPage/getting-started-schema-org.json',
-    '/WebPage/schema-org.json' 
-  ];
 
-  function loadEntity(uri) {
-   reference = {'author': []};
-   $.getJSON(uri, 
-      function(data) {
+  
+  var allReferences = [];
+
+  function createReference(data) {
+    var reference = {'author': []};
+       reference['id'] = data['@id'];
+       if('headline' in data) {
+         reference['title'] = data['headline'][0]['@value'];
+       } else {
+         reference['title'] = data['name'][0]['@value'];
+       }
+       if('copyright' in data) {
+        reference['copyright'] = data['copyrightYear'][0]['@value'];
+       } else {
+        reference['copyright'] = 2014;
+       }
+       if('url' in data) {
+        reference['url'] = data['url'][0]['@value'];
+       } else {
+        reference['url'] = null;
+       }
+       if('author' in data) {
+        reference['author'] = loadAuthors(data['author']);
+       }
+   return reference;
+  }
+
+  function loadAuthors(authorList) {
+    if(authorList.length < 1) {
+       return [];
+    } else {
+       var author_uri = authorList[0]['@id'].split(".info")[1] + ".json";
+      $.getJSON(author_uri, function(data) {
+        console.log(data);   
+        var author = data['name'][0]['@value'];
+        console.log("Author is " + author);
+        return [author, loadAuthors(authorList.splice(1))]
+      });
+    }
+  }
+
+  function loadReferences(ref_list) {
+    if(ref_list.length < 1) {
+       return [];
+    } else {
+       var reference = {'author': ko.observableArray()};
+       $.getJSON(ref_list[0], function(data) {
        reference['id'] = data['@id'];
        if('headline' in data) {
          reference['title'] = data['headline'][0]['@value'];
@@ -88,32 +122,37 @@
         reference['url'] = null;
        }
        for(j in data['author']) {
-         author_uri = data['author'][j]['@id'].split(".info")[1] + ".json";
+         
          reference['author'].push(author_uri);
        }
-    }).done(function() {
-      return reference
-    });
+
+       }).done(function() {
+          allReferences.push(reference);
+          return loadReferences(ref_list.splice(1));
+       });
+    }
   }
 
   function ReferenceViewModel() {
    var self = this;
-
-   self.loadAuthor = function(author_uri) {
-    $.getJSON(author_uri, function(author_data) {
-        return author_data['name'][0]['@value'];
-    });
-   }
+   
    self.references = ko.observableArray();
+   self.referenceURIs = [  
+    '/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
+    '/WebPage/bibframe.json',
+    '/WebPage/getting-started-schema-org.json',
+    '/WebPage/schema-org.json' 
+   ];
+   for(i in self.referenceURIs) {
+     $.getJSON(self.referenceURIs[i], function(data) {
+        var reference = createReference(data);
+        self.references.push(reference);
+     });
+   }
   }
 
   var ref_view_model = new ReferenceViewModel();
-  for(i in referenceURIs) {
-     var refURI = referenceURIs[i];
-     var reference = null;
-     reference = loadEntity(refURI);
-     ref_view_model.references.push(reference);
-   }
+  
   ko.applyBindings(ref_view_model);
 </script>
 {% endblock %}

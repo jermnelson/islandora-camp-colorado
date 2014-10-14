@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block main %}
+ {% include 'snippets/top-bar.html' %}
+
+ <div class="row">
+  <div class="large-11 columns">
+   <h1>What is Linked Data?</h1>
+  </div>
+ </div>
+
+ <div class="row">
+  <div class="large-8 columns">
+   <div class="panel callout radius">
+   <p>
+    Linked Data is about making relationships between our data more 
+    explicit in machine-readable formats. A Linked Data statement, called a RDF Triple,
+    is usually in the format of &lt;subject&gt; &lt;predicate&gt; &lt;object&gt;.
+   </p>
+   <p>
+    What we think of as "bibliographic records" are, in a linked-data context,
+    just a collection of statements that follow this basic RDF triple model.
+    Any <em>subject</em>, <em>predicate</em>, or <em>object</em> can be a string,
+    an URI, or a blank node. A collection of these triples makes up a RDF graph.
+    In Fedora 4, each object has a RDF graph made up the descriptive, administrative,
+    and structural triples.
+   </p> 
+   <p>
+    One of the most exciting possibilities of using RDF graphs for Fedora Metadata Objects
+    is the easy of including multiple vocabularies in the same object. Why is the
+    important? As we increase our services to our communities, we can support and use their
+    vocabularies instead of trying to shoehorn their information into our own standards.
+    A growing collection of these vocabularies is being maintained at 
+    <a href="http://lov.okfn.org/dataset/lov/">http://lov.okfn.org/dataset/lov/</a>.
+   </p>
+   </div>
+    
+    </div>
+
+  <div class="large-4 columns">
+   <h3>One Triple</h3>
+   <img src="{{ url_for('static', filename='img/linked-data-triple.png') }}">
+   <p>
+    <strong>Subject</strong> - <em>Pride and Prejudice</em>
+   </p>
+   <p>
+    <strong>Predicate</strong> - <em>rda:languageOfWork</em>
+   </p>
+   <p>
+    <strong>Object</strong> - <em>English</em>
+   </p>
+  </div>
+ </div>
+
+<div class="row">
+ <div class="large-12 columns">
+ <table>
+    <tr> 
+      <th>Subject</th>
+      <th>Predicate</th>
+      <th>Object</th>
+    </tr>
+    <tr>
+     <td>http://localhost:8080/rest/bibframe/Work/543d792d2e7ec303a3a0120d</td>
+     <td>http://fedora.info/definitions/v4/repository#created</td>
+     <td>2014-10-14T19:22:02.148Z</td>
+    </tr>
+    <tr>
+     <td>http://localhost:8080/rest/bibframe/Work/543d792d2e7ec303a3a0120d</td>
+     <td>http://bibframe.org/vocab/language</td>
+     <td>http://id.loc.gov/vocabulary/languages/eng</td>
+    </tr>
+    <tr>
+     <td>http://localhost:8080/rest/marc/1234</td>
+     <td>http://marc21rdf.info/elements/2XX/M260__c</td>
+     <td>c[1942]</td>
+    </tr>
+    <tr>
+     <td>http://localhost:8080/rest/bibframe/Work/543d792d2e7ec303a3a0120d</td>
+     <td>http://bibframe.org/vocab/title</td>
+     <td>Go down, Moses</td>
+    </tr>
+   </table>
+ </div>
+</div>
+{% endblock %}
+

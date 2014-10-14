@@ -41,14 +41,62 @@
 <div class="row">
 
   {# START #}
-  <div class="large-4 columns">
-   <h4>Example REST Calls</h4>
+  <div class="large-6 columns">
+   <h3>Example REST Calls</h3>
+   <p>Fedora 4's primary method for application access and interation is 
+   through a RESTful HTTP API that uses HTTP methods like GET, POST, PUT,
+   PATCH, and DELETE. The RESTful HTTP API also uses content negotiation 
+   for delivering RDF/XML, N-Triples, JSON-LD, plain text, and Turtle
+   serializations to requesting applications.</p>
+
+   <h4>Retrieve all triples for the resource</h4>
+   <pre>
+    $ wget -H "Accept: text/turtle" "http://localhost:8080/rest/path/to/resource"
+   </pre>
+   <b>Code Example</b>
+   <pre>
+    >> import rdflib
+    >> base_repo_graph = rdflib.Graph().parse("http://localhost:8080/rest/")
+   </pre>
+   <h4>Creating a Fedora Object</h4>
+   <p>Creating a Fedora Object can be accomplished through either <strong>POST</strong>
+   or <strong>PUT</strong> REST API calls. 
+   <pre>
+    $ wget -X POST "http://localhost:8080/rest/"
+    $ curl -X POST -H "Content-Type: text/turtle" --data-binary "@body.rdf" "http://localhost:8080/rest/"
+ 
+    Request Body:
+    PREFIX dc: <http://purl.org/dc/elements/1.1/>
+    <> dc:title "some-resource-title"
+   </pre>
+   <b>Code Example</b>
+   <pre>
+     >> import urlib.request
+     >> new_object_request = urllib.request.Request('http://localhost:8080/rest/', method='POST') 
+     >> response = urllib.request.urlopen(new_object_request)
+     >> print(response.read())
+     >> new_book_uri = rdflib.URIRef('http://localhost:8080/rest/schema/Book/a2346')
+     >> new_book = rdflib.Graph()
+     >> new_book.add((new_book_uri, rdflib.RDFS.label, rdflib.Literal('This is a Test Label')))
+     >> new_book_request = urllib.request.Request('http://localhost:8080/rest/schema/Book/a2346',
+     ..     method='PUT', data=new_book.serialize(format='turtle'), headers={'Content-type': 'text/turtle'})
+     >> response2 = urllib.request.urlopen(new_book_request)
+     >> print(response2.read())
+   </pre>
+   
   {# END #}
   </div>
 
   {# START #}
-  <div class="large-4 columns">
-   <h4>SPARQL Endpoint</h4>
+  <div class="large-6 columns">
+   <div class="panel">
+     <h4>SPARQL Endpoint</h4>
+     <p>Fedora 4 has a restriced SPARQL endpoint with a limited subset of 
+       SPARQL/Select for fielded searching.
+     </p>
+
+     
+   </div>
   {# END #}
   </div>
 

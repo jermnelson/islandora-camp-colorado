@@ -23,30 +23,40 @@
     <div class="large-3 columns ">
       <div class="panel">
         <a href="#"><img src="{{ url_for('static', filename='img/islandora_camp_co2014.png') }}"/></a>
-        <h5>References</h5>
       </div>
+      <h5>Github Repositories</h5>
+      <ul>
+        <li>Flask Fedora Commons  <a href="https://github.com/jermnelson/flask-fedora-commons">https://github.com/jermnelson/flask-fedora-commons</a></li>
+        <li>Schema.org Web Editor <a href="https://github.com/jermnelson/schema-org-editor">https://github.com/jermnelson/schema-org-editor</a></li> 
+        <li>BIBFRAME Editor (Fedora fork) <a href="https://github.com/jermnelson/bfe">https://github.com/jermnelson/bfe</a></li>
+        <li>TIGER Catalog <a href="https://github.com/Tutt-Library/tiger-catalog">https://github.com/Tutt-Library/tiger-catalog</a></li>
+      </ul>
     </div>
     
      
      
     <div class="large-8 columns">
-
-     <span data-bind="foreach: references"> 
-      <div class="row">
-        <a data-bind="attr: { name: id }"></a>
+    {%for reference in references %}
+     <div class="row">
+        <a name="{{ reference.get('id') }}"></a>
         <div class="large-2 columns small-3">
-          <img src="http://placehold.it/80x80&text=[img]"/></div>
+          <img width="80" height="80" src="{{ reference.get('thumbnail') }}"/></div>
         <div class="large-10 columns">
-          <p><strong data-bind="text: title"></strong> (<span data-bind="text: copyright"></span>) 
-           by <!-- ko foreach: author --><span data-bind="text: name"></span>
-             <!-- /ko -->. 
-            Available at <a data-bind="attr: { href: url}, text: url"></a>.
+          <p><strong>{{ reference.get('title') }}</strong> ({{ reference.get('copyright') }}) 
+           {% if reference.author|length > 0 %}
+           by {% for author in reference.get('author') %}{{ author.get('name') }}{% if not loop.last %},{% endif %}{% endfor %}
+           {% endif %}
           </p>
-      </div>
-      <hr>
-     </span>
- 
- 
+          {% if 'url' in reference %}
+          <p>
+	   Available at <a href="{{ reference.url }}">{{ reference.url }}</a>.
+          </p>
+          {% endif %}
+        </div>
+     </div>
+     <hr>
+    {% endfor %}
+
     </div>
      
  
@@ -57,98 +67,9 @@
 {% block more_js %}
 <script src="{{ url_for('static', filename='js/knockout-3.2.0.js') }}"></script>
 <script>
-
-  
-  var allReferences = [];
-
-  function createReference(data) {
-    var reference = {'author': []};
-       reference['id'] = data['@id'];
-       if('headline' in data) {
-         reference['title'] = data['headline'][0]['@value'];
-       } else {
-         reference['title'] = data['name'][0]['@value'];
-       }
-       if('copyright' in data) {
-        reference['copyright'] = data['copyrightYear'][0]['@value'];
-       } else {
-        reference['copyright'] = 2014;
-       }
-       if('url' in data) {
-        reference['url'] = data['url'][0]['@value'];
-       } else {
-        reference['url'] = null;
-       }
-       if('author' in data) {
-        reference['author'] = loadAuthors(data['author']);
-       }
-   return reference;
-  }
-
-  function loadAuthors(authorList) {
-    if(authorList.length < 1) {
-       return [];
-    } else {
-       var author_uri = authorList[0]['@id'].split(".info")[1] + ".json";
-      $.getJSON(author_uri, function(data) {
-        console.log(data);   
-        var author = data['name'][0]['@value'];
-        console.log("Author is " + author);
-        return [author, loadAuthors(authorList.splice(1))]
-      });
-    }
-  }
-
-  function loadReferences(ref_list) {
-    if(ref_list.length < 1) {
-       return [];
-    } else {
-       var reference = {'author': ko.observableArray()};
-       $.getJSON(ref_list[0], function(data) {
-       reference['id'] = data['@id'];
-       if('headline' in data) {
-         reference['title'] = data['headline'][0]['@value'];
-       } else {
-         reference['title'] = data['name'][0]['@value'];
-       }
-       if('copyright' in data) {
-        reference['copyright'] = data['copyrightYear'][0]['@value'];
-       } else {
-        reference['copyright'] = 2014;
-       }
-       if('url' in data) {
-        reference['url'] = data['url'][0]['@value'];
-       } else {
-        reference['url'] = null;
-       }
-       for(j in data['author']) {
-         
-         reference['author'].push(author_uri);
-       }
-
-       }).done(function() {
-          allReferences.push(reference);
-          return loadReferences(ref_list.splice(1));
-       });
-    }
-  }
-
   function ReferenceViewModel() {
    var self = this;
    
-   self.references = ko.observableArray();
-   self.referenceURIs = [  
-    '/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
-    '/WebPage/bibframe.json',
-    '/WebPage/getting-started-schema-org.json',
-    '/WebPage/schema-org.json' 
-   ];
-   for(i in self.referenceURIs) {
-     $.getJSON(self.referenceURIs[i], function(data) {
-        var reference = createReference(data);
-        self.references.push(reference);
-     });
-   }
   }
 
   var ref_view_model = new ReferenceViewModel();

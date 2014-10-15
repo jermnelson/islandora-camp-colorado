@@ -21,8 +21,9 @@ for row in [
     ('/home/jpnelson/intro2libsys/thing/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
      'bibframe-newlogo.png'),
     ('/home/jpnelson/intro2libsys/thing/WebPage/getting-started-schema-org.json', 'schema-org.png'),
-    ('/home/jpnelson/intro2libsys/WebPage/linked-open-vocabularies-lov.json', 'rdf-w3c.gif'),
-    ('/home/jpnelson/thing/WebPage/the-marc21-vocabularies-from-metadata-management-associates.json', 'marc21h2.gif'),
+    ('/home/jpnelson/intro2libsys/thing/WebPage/fedora.json', 'fedora-commons-4-beta.png'),
+    ('/home/jpnelson/intro2libsys/thing/WebPage/linked-open-vocabularies-lov.json', 'rdf-w3c.gif'),
+    ('/home/jpnelson/intro2libsys/thing/WebPage/the-marc21-vocabularies-from-metadata-management-associates.json', 'marc21h2.gif'),
     ('/home/jpnelson/intro2libsys/thing/WebPage/schema-org.json', 'schema-org.png'),
     ('/home/jpnelson/intro2libsys/thing/BlogPosting/visualising-schemaorg.json', 'schema-org.png')]:
     uri_json = json.load(open(row[0]))

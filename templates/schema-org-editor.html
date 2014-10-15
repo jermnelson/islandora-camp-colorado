@@ -16,32 +16,7 @@
  
   <div class="row">
  
-    <div class="large-3 panel columns">
-      <img src="{{ url_for('static', filename='img/schema-org.png') }}">
- 
-      <h4>What is the Schema.org vocabulary?</h4>
- 
-      <p>
-       "a collection of schemas that webmasters can use to markup HTML pages in 
-       ways recognized by major search providers, and that can also be used for 
-       structured data interoperability (e.g. in JSON). Search engines including 
-       Bing, Google, Yahoo! and Yandex rely on this markup to improve the display 
-       of search results, making it easier for people to find the right Web pages."<br>
-       <em>Text from schema.org homepage</em>
-      <p>
-      <hr>
-      <div class="row">
-        <div class="large-6 columns">
-        <a href="http://schema.org/" class="small button">Website</a>
-        </div>
- 
-        <div class="large-6 columns">
-        <a href="http://schema.rdfs.org/" class="small button">RDFS</a>
-        </div>
- 
-      </div>
-    </div>
- 
+  
     <div class="large-9 columns">
       <div class="panel">
       <ul class="button-group">
@@ -53,19 +28,37 @@
       </ul>
       </div>
  
+    </div>
+ 
+  </div>
+
+ <div class="row">
+   <div class="large-10 panel columns">
+      <img class="right" src="{{ url_for('static', filename='img/schema-org.png') }}">
+      <div style="margin: .5em"> 
+       <h4>What is the Schema.org vocabulary?</h4>
+       <p>
+        "a collection of schemas that webmasters can use to markup HTML pages in 
+        ways recognized by major search providers, and that can also be used for 
+        structured data interoperability (e.g. in JSON). Search engines including 
+        Bing, Google, Yahoo! and Yandex rely on this markup to improve the display 
+        of search results, making it easier for people to find the right Web pages."<br>
+        <em>Text from schema.org homepage</em>
+       <p>
+      </div>
       <div class="row">
-        <div class="large-10 columns">
-          <div class="panel">
-            <h5>Schema.org Examples</h5>
-            <p>Schema.org examples using HTML, RDF, Turtle, and JSON-LD</p>
-            <a href="#" class="small button">Show</a>
-          </div>
+        <div class="large-3 columns">
+        <a href="http://schema.org/" target="_top" class="small button">Website</a>
+        </div>
+ 
+        <div class="large-3 columns">
+        <a href="http://schema.rdfs.org/" class="small button">RDFS</a>
         </div>
  
       </div>
     </div>
- 
-  </div>
+
+ </div>
  
 {% endblock %}
 

@@ -16,21 +16,21 @@ presentation = Flask(__name__)
 REFS = []
 
 for row in [
-    ('/home/jpnelson/intro2libsys/thing/Article/bibliographic-framework-as-a-web-of-data.json','bibframe-newlogo.png'),
-    ('/home/jpnelson/intro2libsys/thing/WebPage/bibframe.json', 'bibframe-newlogo.png'),
-    ('/home/jpnelson/intro2libsys/thing/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
+    ('/opt/intro2libsys/thing/Article/bibliographic-framework-as-a-web-of-data.json','bibframe-newlogo.png'),
+    ('/opt/intro2libsys/thing/WebPage/bibframe.json', 'bibframe-newlogo.png'),
+    ('/opt/intro2libsys/thing/Article/bibframe-av-modeling-study-defining-a-flexible-model-for-description-of-audiovisual-resources.json',
      'bibframe-newlogo.png'),
-    ('/home/jpnelson/intro2libsys/thing/WebPage/getting-started-schema-org.json', 'schema-org.png'),
-    ('/home/jpnelson/intro2libsys/thing/WebPage/fedora.json', 'fedora-commons-4-beta.png'),
-    ('/home/jpnelson/intro2libsys/thing/WebPage/linked-open-vocabularies-lov.json', 'rdf-w3c.gif'),
-    ('/home/jpnelson/intro2libsys/thing/WebPage/the-marc21-vocabularies-from-metadata-management-associates.json', 'marc21h2.gif'),
-    ('/home/jpnelson/intro2libsys/thing/WebPage/schema-org.json', 'schema-org.png'),
-    ('/home/jpnelson/intro2libsys/thing/BlogPosting/visualising-schemaorg.json', 'schema-org.png')]:
+    ('/opt/intro2libsys/thing/WebPage/getting-started-schema-org.json', 'schema-org.png'),
+    ('/opt/intro2libsys/thing/WebPage/fedora.json', 'fedora-commons-4-beta.png'),
+    ('/opt/intro2libsys/thing/WebPage/linked-open-vocabularies-lov.json', 'rdf-w3c.gif'),
+    ('/opt/intro2libsys/thing/WebPage/the-marc21-vocabularies-from-metadata-management-associates.json', 'marc21h2.gif'),
+    ('/opt/intro2libsys/thing/WebPage/schema-org.json', 'schema-org.png'),
+    ('/opt/intro2libsys/thing/BlogPosting/visualising-schemaorg.json', 'schema-org.png')]:
     uri_json = json.load(open(row[0]))
     reference = {'id': uri_json.get('@id'), 'author': [], 'thumbnail': "http://intro2libsys.info/islandora-camp-2014/static/img/{}".format(row[1])}
     for row in uri_json.get('author',[]):
         author_id = row.get('@id').split("/")[-1]
-        author_json = json.load(open('/home/jpnelson/intro2libsys/thing/Person/{}.json'.format(author_id)))
+        author_json = json.load(open('/opt/intro2libsys/thing/Person/{}.json'.format(author_id)))
         reference['author'].append({"name": author_json.get('name')[0]['@value']})
     if 'copyrightYear' in uri_json:
         reference['copyright'] = uri_json['copyrightYear'][0].get('@value')
